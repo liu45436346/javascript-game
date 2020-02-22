@@ -26,13 +26,55 @@
             image: image,
             x: 100,
             y: 200,
-            space: 5,
+            speed: 10,
         }
         o.moveLeft = function () {
-            o.x -= o.space
+            o.x -= o.speed
         }
         o.moveRight= function () {
-            o.x += o.space
+            o.x += o.speed
+        }
+        o.collide = function(ball) {
+            if (ball.y + ball.image.height > o.y) {
+                if (ball.x > o.x && ball.x < o.x + o.image.width) {
+                    return true
+                }
+            }
+            return false
+        }
+        return o
+    }
+
+    var Ball = function() {
+        var image = imageFromPath('ball.png')
+        var o = {
+            image: image,
+            x: 100,
+            y: 200,
+            speedX: 10,
+            speedY: 10,
+            fired: false,
+        }
+        console.log('o',o)
+        o.fire = function () {
+            o.fired = true
+        }
+        o.move = function () {
+            if (o.fired) {
+                if (o.x < 0 || o.x > 400) {
+                    o.speedX = -o.speedX
+                }
+                if (o.y < 0 || o.y > 300) {
+                    o.speedY = -o.speedY
+                }
+                // move
+                o.x += o.speedX
+                o.y += o.speedY
+            }
+        }
+        o.rebound = function () {
+            o.speedX = -o.speedX
+            o.speedY = -o.speedY
         }
         return o
     }
@@ -46,8 +88,8 @@
             actives: {},
             keyDown: {},
         }
-        o.drawImage = function () {
-            context.drawImage(paddle.image, paddle.x, paddle.y)
+        o.drawImage = function (gameImage) {
+            context.drawImage(gameImage.image, gameImage.x, gameImage.y)
         }
         o.clearRect = function () {
             context.clearRect(0, 0, canvas.width, canvas.height)
@@ -73,11 +115,12 @@
             for (let i = 0; i < keys.length; i++) {
                 const key = keys[i];
                 if (o.keyDown[key]) {
-                    o.clearRect()
                     o.actives[key]()
-                    o.drawImage()
                 }
             }
+            o.clearRect()
+            o.update()
+            o.draw()
         }, 1000 / 30)
         
         return o
@@ -86,7 +129,8 @@
     var __main = function () {
 
         // paddle
-        var paddle = Paddle()
+        paddle = Paddle()
+        var ball = Ball()
 
         var game = Game(paddle)
         game.registerAction('a', function () {
@@ -97,8 +141,23 @@
             paddle.moveRight()
         })
 
+        game.registerAction('f', function () {
+            ball.fire()
+        })
+
+        // update
+        game.update = function () {
+            ball.move()
+            if (paddle.collide(ball)) {
+                ball.rebound()
+            }
+        }
+
         // draw
-        game.drawImage()
+        game.draw = function () {
+            game.drawImage(paddle)
+            game.drawImage(ball)
+        }
 
     }
     __main()
