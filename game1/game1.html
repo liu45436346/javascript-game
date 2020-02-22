@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>game1</title>
+    <style>
+        #id-canvas {
+            border: 1px solid black;
+        }
+    </style>
+</head>
+<body>
+<canvas id="id-canvas" width="400" height="300"></canvas>
+<script>
+    var log = console.log.bind(console)
+
+    var canvas = document.querySelector('#id-canvas')
+    var context = canvas.getContext('2d')
+    var imageFromPath = function(path) {
+        var img = new Image()
+        img.src = path
+        return img
+    }
+    var img = imageFromPath('paddle.png')
+    var x = 100
+    var y = 200
+    var space = 5
+    context.drawImage(img, x, y)
+    var left = false
+    var right = false
+    window.addEventListener('keydown', function (event) {
+        var key = event.key
+        if (key === 'a') {
+            left = true
+        } else if (key === 'd') {
+            right = true
+        }
+    })
+
+    window.addEventListener('keyup', function (event) {
+        var key = event.key
+        if (key === 'a') {
+            left = false
+        } else if (key === 'd') {
+            right = false
+        }
+    })
+
+    var Paddle = function() {
+
+    }
+
+
+    setInterval(function () {
+        if (left) {
+            x -= space
+        } else if (right) {
+            x += space
+        }
+        context.clearRect(0, 0, canvas.width, canvas.height)
+        context.drawImage(img, x, y)
+    }, 1000 / 30)
+    
+</script>
+</body>
+</html>
