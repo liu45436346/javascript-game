@@ -14,53 +14,94 @@
 <script>
     var log = console.log.bind(console)
 
-    var canvas = document.querySelector('#id-canvas')
-    var context = canvas.getContext('2d')
     var imageFromPath = function(path) {
         var img = new Image()
         img.src = path
         return img
     }
-    var img = imageFromPath('paddle.png')
-    var x = 100
-    var y = 200
-    var space = 5
-    context.drawImage(img, x, y)
-    var left = false
-    var right = false
-    window.addEventListener('keydown', function (event) {
-        var key = event.key
-        if (key === 'a') {
-            left = true
-        } else if (key === 'd') {
-            right = true
-        }
-    })
-
-    window.addEventListener('keyup', function (event) {
-        var key = event.key
-        if (key === 'a') {
-            left = false
-        } else if (key === 'd') {
-            right = false
-        }
-    })
 
     var Paddle = function() {
-
+        var image = imageFromPath('paddle.png')
+        var o = {
+            image: image,
+            x: 100,
+            y: 200,
+            space: 5,
+        }
+        o.moveLeft = function () {
+            o.x -= o.space
+        }
+        o.moveRight= function () {
+            o.x += o.space
+        }
+        return o
     }
 
-
-    setInterval(function () {
-        if (left) {
-            x -= space
-        } else if (right) {
-            x += space
+    var Game = function (paddle) {
+        var canvas = document.querySelector('#id-canvas')
+        var context = canvas.getContext('2d')
+        var o = {
+            canvas: canvas,
+            context: context,
+            actives: {},
+            keyDown: {},
         }
-        context.clearRect(0, 0, canvas.width, canvas.height)
-        context.drawImage(img, x, y)
-    }, 1000 / 30)
-    
+        o.drawImage = function () {
+            context.drawImage(paddle.image, paddle.x, paddle.y)
+        }
+        o.clearRect = function () {
+            context.clearRect(0, 0, canvas.width, canvas.height)
+        }
+
+        o.registerAction = function (key, handleAction) {
+            o.actives[key] = handleAction
+        }
+
+
+        window.addEventListener('keydown', function (event) {
+            var key = event.key
+            o.keyDown[key] = true
+        })
+
+        window.addEventListener('keyup', function (event) {
+            var key = event.key
+            o.keyDown[key] = false
+        })
+
+        setInterval(function () {
+            var keys = Object.keys(o.actives)
+            for (let i = 0; i < keys.length; i++) {
+                const key = keys[i];
+                if (o.keyDown[key]) {
+                    o.clearRect()
+                    o.actives[key]()
+                    o.drawImage()
+                }
+            }
+        }, 1000 / 30)
+        
+        return o
+    }
+
+    var __main = function () {
+
+        // paddle
+        var paddle = Paddle()
+
+        var game = Game(paddle)
+        game.registerAction('a', function () {
+            paddle.moveLeft()
+        })
+
+        game.registerAction('d', function () {
+            paddle.moveRight()
+        })
+
+        // draw
+        game.drawImage()
+
+    }
+    __main()
 </script>
 </body>
 </html>
