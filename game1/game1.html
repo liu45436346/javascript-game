@@ -11,126 +11,58 @@
 </head>
 <body>
 <canvas id="id-canvas" width="400" height="300"></canvas>
+<hr>
+<input id="id-input-speed" type="range" value="1">
+<script src="utils.js"></script>
+<script src="paddle.js"></script>
+<script src="ball.js"></script>
+<script src="black.js"></script>
+<script src="game.js"></script>
+<script src="levels.js"></script>
 <script>
-    var log = console.log.bind(console)
+    window.fps = 30
+    var changeBallSpeed = function () {
+        var el = document.querySelector('#id-input-speed')
+        el.addEventListener('input', function (event) {
+            var target = event.target
+            var value = Number(target.value)
+            if (!value) value = 30
+            window.fps = value
+        })
 
-    var imageFromPath = function(path) {
-        var img = new Image()
-        img.src = path
-        return img
     }
 
-    var Paddle = function() {
-        var image = imageFromPath('paddle.png')
-        var o = {
-            image: image,
-            x: 100,
-            y: 200,
-            speed: 10,
+    var loadLevel = function(n) {
+        n = n - 1
+        var level = levels[n]
+        var blacks = []
+        for (var i = 0; i < level.length; i++) {
+            var arr = level[i];
+            var black = Black(arr)
+            blacks.push(black)
         }
-        o.moveLeft = function () {
-            o.x -= o.speed
-        }
-        o.moveRight= function () {
-            o.x += o.speed
-        }
-        o.collide = function(ball) {
-            if (ball.y + ball.image.height > o.y) {
-                if (ball.x > o.x && ball.x < o.x + o.image.width) {
-                    return true
-                }
-            }
-            return false
-        }
-        return o
+        return blacks
     }
 
-    var Ball = function() {
-        var image = imageFromPath('ball.png')
-        var o = {
-            image: image,
-            x: 100,
-            y: 200,
-            speedX: 10,
-            speedY: 10,
-            fired: false,
-        }
-        console.log('o',o)
-        o.fire = function () {
-            o.fired = true
-        }
-        o.move = function () {
-            if (o.fired) {
-                if (o.x < 0 || o.x > 400) {
-                    o.speedX = -o.speedX
-                }
-                if (o.y < 0 || o.y > 300) {
-                    o.speedY = -o.speedY
-                }
-                // move
-                o.x += o.speedX
-                o.y += o.speedY
-            }
-        }
-        o.rebound = function () {
-            o.speedX = -o.speedX
-            o.speedY = -o.speedY
-        }
-        return o
-    }
-
-    var Game = function (paddle) {
-        var canvas = document.querySelector('#id-canvas')
-        var context = canvas.getContext('2d')
-        var o = {
-            canvas: canvas,
-            context: context,
-            actives: {},
-            keyDown: {},
-        }
-        o.drawImage = function (gameImage) {
-            context.drawImage(gameImage.image, gameImage.x, gameImage.y)
-        }
-        o.clearRect = function () {
-            context.clearRect(0, 0, canvas.width, canvas.height)
-        }
-
-        o.registerAction = function (key, handleAction) {
-            o.actives[key] = handleAction
-        }
-
-
+    var changeLevel = function() {
         window.addEventListener('keydown', function (event) {
             var key = event.key
-            o.keyDown[key] = true
-        })
-
-        window.addEventListener('keyup', function (event) {
-            var key = event.key
-            o.keyDown[key] = false
-        })
-
-        setInterval(function () {
-            var keys = Object.keys(o.actives)
-            for (let i = 0; i < keys.length; i++) {
-                const key = keys[i];
-                if (o.keyDown[key]) {
-                    o.actives[key]()
-                }
+            var levels = '123'
+            if (levels.includes(key)) {
+                blacks = loadLevel(Number(key))
             }
-            o.clearRect()
-            o.update()
-            o.draw()
-        }, 1000 / 30)
-        
-        return o
+        })
     }
 
+    var blacks = []
     var __main = function () {
-
+        changeBallSpeed()
+        changeLevel()
         // paddle
         paddle = Paddle()
         var ball = Ball()
+        // var black = Black()
+        blacks = loadLevel(1)
 
         var game = Game(paddle)
         game.registerAction('a', function () {
@@ -144,12 +76,19 @@
         game.registerAction('f', function () {
             ball.fire()
         })
-
         // update
         game.update = function () {
             ball.move()
             if (paddle.collide(ball)) {
                 ball.rebound()
+            }
+            for (var i = 0; i < blacks.length; i++) {
+                var black = blacks[i];
+                var cod = black.alive && (rectIntersects(black, ball) || rectIntersects(ball, black))
+                if (cod) {
+                    black.kill()
+                    ball.rebound()
+                }
             }
         }
 
@@ -157,6 +96,12 @@
         game.draw = function () {
             game.drawImage(paddle)
             game.drawImage(ball)
+            for (var i = 0; i < blacks.length; i++) {
+                var black = blacks[i];
+                if (black.alive) {
+                    game.drawImage(black)
+                }
+            }
         }
 
     }
