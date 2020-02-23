@@ -30,16 +30,18 @@ var Game = function () {
     })
 
     var runloop = function() {
-        var keys = Object.keys(o.actives)
-        for (let i = 0; i < keys.length; i++) {
-            const key = keys[i];
-            if (o.keyDown[key]) {
-                o.actives[key]()
+        if (!window.paused) {
+            var keys = Object.keys(o.actives)
+            for (let i = 0; i < keys.length; i++) {
+                const key = keys[i];
+                if (o.keyDown[key]) {
+                    o.actives[key]()
+                }
             }
+            o.clearRect()
+            o.update()
+            o.draw()
         }
-        o.clearRect()
-        o.update()
-        o.draw()
         setTimeout(function () {
             runloop()
         }, 1000 / window.fps)

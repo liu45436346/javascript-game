@@ -54,10 +54,24 @@
         })
     }
 
+    var enableDebugMode = function(enable) {
+        if (!enable) {
+            return
+        }
+        window.addEventListener('keydown', function (event) {
+            var key = event.key
+            if (key === 'p') {
+                window.paused = !window.paused
+            }
+        })
+
+    }
+
     var blacks = []
     var __main = function () {
         changeBallSpeed()
         changeLevel()
+        enableDebugMode(true)
         // paddle
         paddle = Paddle()
         var ball = Ball()
