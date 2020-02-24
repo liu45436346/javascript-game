@@ -1,5 +1,5 @@
-var Black = function(arr, game) {
-    var image = game.imageFromName('black')
+var Block = function(arr, game) {
+    var image = game.imageFromName('block')
     var x = arr[0]
     var y = arr[1]
     var fired = arr[2] || 1
@@ -18,5 +18,6 @@ var Black = function(arr, game) {
             o.alive = false
         }
     }
+
     return o
 }

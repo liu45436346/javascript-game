@@ -12,13 +12,13 @@ var changeBallSpeed = function () {
 var loadLevel = function(n, game) {
     n = n - 1
     var level = levels[n]
-    var blacks = []
+    var blocks = []
     for (var i = 0; i < level.length; i++) {
         var arr = level[i];
-        var black = Black(arr, game)
-        blacks.push(black)
+        var block = Block(arr, game)
+        blocks.push(block)
     }
-    return blacks
+    return blocks
 }
 
 var changeLevel = function(game) {
@@ -26,7 +26,7 @@ var changeLevel = function(game) {
         var key = event.key
         var levels = '123'
         if (levels.includes(key)) {
-            blacks = loadLevel(Number(key), game)
+            blocks = loadLevel(Number(key), game)
         }
     })
 }
@@ -44,13 +44,13 @@ var enableDebugMode = function(enable) {
 
 }
 
-var blacks = []
+var blocks = []
 var __main = function () {
 
     var images = {
         paddle: 'paddle.png',
         ball: 'ball.png',
-        black: 'black.png',
+        block: 'block.png',
     }
     var gameCallback = function() {
         changeBallSpeed()
@@ -58,11 +58,9 @@ var __main = function () {
         enableDebugMode(true)
         var score = 0
         // paddle
-        var images = game.image
         var paddle = Paddle(game)
         var ball = Ball(game)
-        // var black = Black()
-        blacks = loadLevel(1, game)
+        blocks = loadLevel(1, game)
 
         game.registerAction('a', function () {
             paddle.moveLeft()
@@ -77,15 +75,18 @@ var __main = function () {
         })
         // update
         game.update = function () {
+            if (window.paused) {
+                return
+            }
             ball.move()
             if (paddle.collide(ball)) {
                 ball.rebound()
             }
-            for (var i = 0; i < blacks.length; i++) {
-                var black = blacks[i];
-                var cod = black.alive && (rectIntersects(black, ball) || rectIntersects(ball, black))
+            for (var i = 0; i < blocks.length; i++) {
+                var block = blocks[i];
+                var cod = block.alive && collide(block, ball)
                 if (cod) {
-                    black.kill()
+                    block.kill()
                     ball.rebound()
                     score += 100
                 }
@@ -94,16 +95,44 @@ var __main = function () {
 
         // draw
         game.draw = function () {
+            // draw 背景
+            game.context.fillStyle = "#554"
+            game.context.fillRect(0, 0, 400, 300)
+
             game.drawImage(paddle)
             game.drawImage(ball)
-            for (var i = 0; i < blacks.length; i++) {
-                var black = blacks[i];
-                if (black.alive) {
-                    game.drawImage(black)
+            for (var i = 0; i < blocks.length; i++) {
+                var block = blocks[i];
+                if (block.alive) {
+                    game.drawImage(block)
                 }
             }
+            // draw 分数
+            game.context.fillStyle = "#fff"
             game.context.fillText('分数: ' + score, 10, 290);
         }
+
+        game.canvas.addEventListener('mousedown', function (event) {
+            var x = event.offsetX
+            var y = event.offsetY
+            if (ball.hasPoint(x, y)) {
+                ball.enableDrag = true
+            }
+        })
+
+        game.canvas.addEventListener('mousemove', function (event) {
+            var x = event.offsetX
+            var y = event.offsetY
+            if (ball.enableDrag) {
+                ball.changByPoint(x, y)
+            }
+        })
+
+        game.canvas.addEventListener('mouseup', function (event) {
+            var x = event.offsetX
+            var y = event.offsetY
+            ball.enableDrag = false
+        })
     }
     var game = Game(30, images, gameCallback)
 
