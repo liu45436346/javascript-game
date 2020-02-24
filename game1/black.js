@@ -1,10 +1,12 @@
-var Black = function(arr) {
-    var image = imageFromPath('black.png')
+var Black = function(arr, game) {
+    var image = game.imageFromName('black')
     var x = arr[0]
     var y = arr[1]
     var fired = arr[2] || 1
     var o = {
         image: image,
+        w: image.width,
+        h: image.height,
         x: x,
         y: y,
         alive: true,

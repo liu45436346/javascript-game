@@ -1,4 +1,5 @@
-var Game = function () {
+var Game = function (fps, images, gameCallback) {
+    // images 是图像名字和路径对象
     var canvas = document.querySelector('#id-canvas')
     var context = canvas.getContext('2d')
     var o = {
@@ -6,6 +7,7 @@ var Game = function () {
         context: context,
         actives: {},
         keyDown: {},
+        images: {},
     }
     o.drawImage = function (gameImage) {
         context.drawImage(gameImage.image, gameImage.x, gameImage.y)
@@ -29,6 +31,7 @@ var Game = function () {
         o.keyDown[key] = false
     })
 
+    window.fps = fps
     var runloop = function() {
         if (!window.paused) {
             var keys = Object.keys(o.actives)
@@ -47,10 +50,33 @@ var Game = function () {
         }, 1000 / window.fps)
     }
 
-    setTimeout(function () {
-        runloop()
-    }, 1000 / window.fps)
+    o.run = function () {
+        setTimeout(function () {
+            runloop()
+        }, 1000 / window.fps)
+    }
+    o.imageFromName = function (name) {
+        return o.images[name]
+    }
 
-
+    var loadsLength = 0
+    var loadImages = function() {
+        var names = Object.keys(images)
+        for (let i = 0; i < names.length; i++) {
+            const name = names[i]
+            const imagePath = images[name]
+            let image = new Image()
+            image.onload = function () {
+                loadsLength += 1
+                o.images[name] = image
+                if (loadsLength === names.length) {
+                    o.run()
+                    gameCallback()
+                }
+            }
+            image.src = imagePath
+        }
+    }
+    loadImages()
     return o
 }

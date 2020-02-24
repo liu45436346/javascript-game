@@ -10,116 +10,15 @@
     </style>
 </head>
 <body>
-<canvas id="id-canvas" width="400" height="300"></canvas>
-<hr>
-<input id="id-input-speed" type="range" value="1">
-<script src="utils.js"></script>
-<script src="paddle.js"></script>
-<script src="ball.js"></script>
-<script src="black.js"></script>
-<script src="game.js"></script>
-<script src="levels.js"></script>
-<script>
-    window.fps = 30
-    var changeBallSpeed = function () {
-        var el = document.querySelector('#id-input-speed')
-        el.addEventListener('input', function (event) {
-            var target = event.target
-            var value = Number(target.value)
-            if (!value) value = 30
-            window.fps = value
-        })
-
-    }
-
-    var loadLevel = function(n) {
-        n = n - 1
-        var level = levels[n]
-        var blacks = []
-        for (var i = 0; i < level.length; i++) {
-            var arr = level[i];
-            var black = Black(arr)
-            blacks.push(black)
-        }
-        return blacks
-    }
-
-    var changeLevel = function() {
-        window.addEventListener('keydown', function (event) {
-            var key = event.key
-            var levels = '123'
-            if (levels.includes(key)) {
-                blacks = loadLevel(Number(key))
-            }
-        })
-    }
-
-    var enableDebugMode = function(enable) {
-        if (!enable) {
-            return
-        }
-        window.addEventListener('keydown', function (event) {
-            var key = event.key
-            if (key === 'p') {
-                window.paused = !window.paused
-            }
-        })
-
-    }
-
-    var blacks = []
-    var __main = function () {
-        changeBallSpeed()
-        changeLevel()
-        enableDebugMode(true)
-        // paddle
-        paddle = Paddle()
-        var ball = Ball()
-        // var black = Black()
-        blacks = loadLevel(1)
-
-        var game = Game(paddle)
-        game.registerAction('a', function () {
-            paddle.moveLeft()
-        })
-
-        game.registerAction('d', function () {
-            paddle.moveRight()
-        })
-
-        game.registerAction('f', function () {
-            ball.fire()
-        })
-        // update
-        game.update = function () {
-            ball.move()
-            if (paddle.collide(ball)) {
-                ball.rebound()
-            }
-            for (var i = 0; i < blacks.length; i++) {
-                var black = blacks[i];
-                var cod = black.alive && (rectIntersects(black, ball) || rectIntersects(ball, black))
-                if (cod) {
-                    black.kill()
-                    ball.rebound()
-                }
-            }
-        }
-
-        // draw
-        game.draw = function () {
-            game.drawImage(paddle)
-            game.drawImage(ball)
-            for (var i = 0; i < blacks.length; i++) {
-                var black = blacks[i];
-                if (black.alive) {
-                    game.drawImage(black)
-                }
-            }
-        }
-
-    }
-    __main()
-</script>
+    <canvas id="id-canvas" width="400" height="300"></canvas>
+    <hr>
+    <input id="id-input-speed" type="range" value="1">
+    <script src="utils.js"></script>
+    <script src="paddle.js"></script>
+    <script src="ball.js"></script>
+    <script src="black.js"></script>
+    <script src="game.js"></script>
+    <script src="levels.js"></script>
+    <script src="main.js"></script>
 </body>
 </html>
