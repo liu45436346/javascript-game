@@ -8,6 +8,7 @@ var Game = function (fps, images, gameCallback) {
         actives: {},
         keyDown: {},
         images: {},
+        scene: null
     }
     o.drawImage = function (gameImage) {
         context.drawImage(gameImage.image, gameImage.x, gameImage.y)
@@ -20,6 +21,16 @@ var Game = function (fps, images, gameCallback) {
         o.actives[key] = handleAction
     }
 
+
+    // update
+    o.update = function () {
+        o.scene.update()
+    }
+
+    // draw
+    o.draw = function () {
+        o.scene.draw()
+    }
 
     window.addEventListener('keydown', function (event) {
         var key = event.key
@@ -49,12 +60,17 @@ var Game = function (fps, images, gameCallback) {
     }
 
     o.run = function () {
+        gameCallback()
         setTimeout(function () {
             runloop()
         }, 1000 / window.fps)
     }
     o.imageFromName = function (name) {
         return o.images[name]
+    }
+
+    o.game = function (scene) {
+        o.scene = scene
     }
 
     var loadsLength = 0
@@ -69,7 +85,6 @@ var Game = function (fps, images, gameCallback) {
                 o.images[name] = image
                 if (loadsLength === names.length) {
                     o.run()
-                    gameCallback()
                 }
             }
             image.src = imagePath
