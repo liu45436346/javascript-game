@@ -69,7 +69,7 @@ var Game = function (fps, images, gameCallback) {
         return o.images[name]
     }
 
-    o.game = function (scene) {
+    o.replaceScene = function (scene) {
         o.scene = scene
     }
 
