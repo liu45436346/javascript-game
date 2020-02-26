@@ -39,13 +39,14 @@ var enableDebugMode = function(enable) {
 var blocks = []
 var __main = function () {
 
+    var baePath = 'img/'
     var images = {
-        paddle: 'paddle.png',
-        ball: 'ball.png',
-        block: 'block.png',
+        paddle: baePath + 'paddle.png',
+        ball: baePath + 'ball.png',
+        block: baePath + 'block.png',
     }
     var gameCallback = function() {
-        var scene = Scene(game)
+        var scene = new SceneTitle(game)
         game.replaceScene(scene)
     }
     var game = Game(30, images, gameCallback)
