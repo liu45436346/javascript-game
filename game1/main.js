@@ -49,7 +49,7 @@ var __main = function () {
         var scene = new SceneTitle(game)
         game.replaceScene(scene)
     }
-    var game = Game(30, images, gameCallback)
+    var game = new Game(30, images, gameCallback)
     changeBallSpeed()
     enableDebugMode(true)
 
