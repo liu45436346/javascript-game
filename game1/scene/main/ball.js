@@ -1,20 +1,18 @@
-var Ball = function(game) {
-    var image = game.imageFromName('ball')
-    var o = {
-        image: image,
-        w: image.width,
-        h: image.height,
-        x: 100,
-        y: 200,
-        speedX: 5,
-        speedY: 5,
-        fired: false,
-        enableDrag: false,
+class Ball extends BaseImage {
+    constructor(game) {
+        super(game, 'ball')
+        this.x = 100
+        this.y = 200
+        this.speedX = 5
+        this.speedY = 5
+        this.fired = false
+        this.enableDrag = false
     }
-    o.fire = function () {
-        o.fired = true
+    fire() {
+        this.fired = true
     }
-    o.move = function () {
+    move() {
+        var o = this
         if (o.fired) {
             if (o.x < 0 || o.x > 400) {
                 o.speedX = -o.speedX
@@ -27,18 +25,19 @@ var Ball = function(game) {
             o.y += o.speedY
         }
     }
-    o.rebound = function () {
-        // o.speedX = -o.speedX
+    rebound() {
+        var o = this
         o.speedY = -o.speedY
     }
-    o.hasPoint = function(x, y) {
+    hasPoint(x, y) {
+        var o = this
         var xIn = x >= o.x && x <= o.x + o.w
         var yIn = y >= o.y && y <= o.y + o.h
         return xIn && yIn
     }
-    o.changByPoint = function(x, y) {
+    changByPoint(x, y) {
+        var o = this
         o.x = x
         o.y = y
     }
-    return o
 }

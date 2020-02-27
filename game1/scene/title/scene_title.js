@@ -2,8 +2,11 @@ class SceneTitle extends BaseScene {
     constructor(game) {
         super(game)
         game.registerAction('k', function () {
-            game.replaceScene(Scene(game))
+            game.replaceScene(Scene.new(game))
         })
+    }
+    static new (game) {
+        return this.i || new this(game)
     }
     draw() {
         this.game.context.fillStyle = "black"

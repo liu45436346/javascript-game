@@ -24,8 +24,12 @@ class Game {
         })
         this.loadImages()
     }
+    static instance(...args) {
+        this.i = this.i || new this(...args)
+        return this.i
+    }
     drawImage(gameImage) {
-        this.context.drawImage(gameImage.image, gameImage.x, gameImage.y)
+        this.context.drawImage(gameImage.texture, gameImage.x, gameImage.y)
     }
     clearRect() {
         var canvas = this.canvas
@@ -63,7 +67,7 @@ class Game {
             o.runloop()
         }, 1000 / window.fps)
     }
-    imageFromName(name) {
+    textureByName(name) {
         return this.images[name]
     }
     replaceScene(scene) {

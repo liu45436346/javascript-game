@@ -1,32 +1,29 @@
-var Paddle = function(game) {
-    var image = game.imageFromName('paddle')
-    var o = {
-        image: image,
-        w: image.width,
-        h: image.height,
-        x: 100,
-        y: 240,
-        speed: 10,
+class Paddle extends BaseImage {
+    constructor(game) {
+        super(game, 'paddle')
+        this.x = 100
+        this.y = 240
+        this.speed = 10
     }
-    o.move = function(x) {
-        var w = o.image.width
+    move(x) {
+        var w = this.w
         if (x < 0) {
             x = 0
         } else if (x + w > 400) {
             x = 400 - w
         }
-        o.x = x
+        this.x = x
     }
-    o.moveLeft = function () {
+    moveLeft() {
+        var o = this
         o.move(o.x - o.speed)
-
     }
-    o.moveRight= function () {
+    moveRight() {
+        var o = this
         o.move(o.x + o.speed)
     }
-
-    o.collide = function(ball) {
+    collide(ball) {
+        var o = this
         return collide(o, ball)
     }
-    return o
 }

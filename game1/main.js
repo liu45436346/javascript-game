@@ -9,20 +9,6 @@ var changeBallSpeed = function () {
 
 }
 
-var loadLevel = function(n, game) {
-    n = n - 1
-    var level = levels[n]
-    var blocks = []
-    for (var i = 0; i < level.length; i++) {
-        var arr = level[i];
-        var block = Block(arr, game)
-        blocks.push(block)
-    }
-    return blocks
-}
-
-
-
 var enableDebugMode = function(enable) {
     if (!enable) {
         return
@@ -36,7 +22,6 @@ var enableDebugMode = function(enable) {
 
 }
 
-var blocks = []
 var __main = function () {
 
     var baePath = 'img/'
@@ -46,10 +31,10 @@ var __main = function () {
         block: baePath + 'block.png',
     }
     var gameCallback = function() {
-        var scene = new SceneTitle(game)
+        var scene = SceneTitle.new(game)
         game.replaceScene(scene)
     }
-    var game = new Game(30, images, gameCallback)
+    var game = Game.instance(30, images, gameCallback)
     changeBallSpeed()
     enableDebugMode(true)
 

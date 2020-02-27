@@ -3,7 +3,7 @@ class SceneEnd extends BaseScene {
     constructor(game) {
         super(game)
         game.registerAction('r', function () {
-            var scene = new SceneTitle(game)
+            var scene = SceneTitle.new(game)
             game.replaceScene(scene)
         })
     }

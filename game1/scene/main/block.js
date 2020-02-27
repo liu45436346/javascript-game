@@ -1,23 +1,19 @@
-var Block = function(arr, game) {
-    var image = game.imageFromName('block')
-    var x = arr[0]
-    var y = arr[1]
-    var fired = arr[2] || 1
-    var o = {
-        image: image,
-        w: image.width,
-        h: image.height,
-        x: x,
-        y: y,
-        alive: true,
-        fired: fired,
+class Block extends BaseImage {
+    constructor(arr, game) {
+        super(game, 'block')
+        var x = arr[0]
+        var y = arr[1]
+        var fired = arr[2] || 1
+        this.x = x
+        this.y = y
+        this.alive = true
+        this.fired = fired
     }
-    o.kill = function () {
+    kill() {
+        var o = this
         o.fired -= 1
         if (o.fired === 0) {
             o.alive = false
         }
     }
-
-    return o
 }
