@@ -5,9 +5,6 @@ class SceneTitle extends BaseScene {
             game.replaceScene(Scene.new(game))
         })
     }
-    static new (game) {
-        return this.i || new this(game)
-    }
     draw() {
         this.game.context.fillStyle = "black"
         this.game.context.fillText('按 k 游戏开始', 150, 150);
