@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>game2</title>
+    <style>
+        #id-canvas {
+            border: 1px solid black;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="id-canvas" width="480" height="700"></canvas>
+    <hr>
+    <div>
+        <label>
+            <input id="id-input-speed" type="range" value="1">
+            <!--帧率:<span class="ui-label"></span>-->
+        </label>
+    </div>
+
+
+    <div>
+        <label>
+            <input data-value="config.player_speed" class="auto-slider" type="range" value="">
+            玩家速度:<span class="ui-label"></span>
+        </label>
+    </div>
+    <div>
+        <label>
+            <input data-value="config.bullet_speed" class="auto-slider" type="range" value="">
+            子弹速度:<span class="ui-label"></span>
+        </label>
+    </div>
+    <div>
+        <label>
+            <input data-value="config.bullet_cooldown" class="auto-slider" type="range" value="">
+            子弹冷却时间:<span class="ui-label"></span>
+        </label>
+    </div>
+    <div>
+        <label>
+            <input data-value="config.enemy_speed" class="auto-slider" type="range" value="">
+            敌机速度:<span class="ui-label"></span>
+        </label>
+    </div>
+
+    <script>
+        var es = (sel) => document.querySelectorAll(sel)
+        var bindAll = (sel, eventName, callBack) => {
+            var l = es(sel)
+            for (let i = 0; i < l.length; i++) {
+                const e = l[i];
+                e.addEventListener(eventName, function (event) {
+                    callBack(event)
+                })
+
+            }
+        }
+        bindAll('.auto-slider', 'input', function (event) {
+            var target = event.target
+            var dataValue = target.dataset.value
+            var val = target.value
+            eval(dataValue + '='+ val)
+            var label = target.closest('label').querySelector('.ui-label')
+            label.innerText = val
+        })
+    </script>
+    <!--game-->
+    <script src="game/config.js"></script>
+    <script src="game/utils.js"></script>
+    <script src="game/game.js"></script>
+    <script src="game/scene.js"></script>
+    <script src="game/image.js"></script>
+    <!--scene-->
+    <script src="scene/main/sky.js"></script>
+    <script src="scene/main/player.js"></script>
+    <script src="scene/main/enemy.js"></script>
+    <script src="scene/main/bullet.js"></script>
+    <script src="scene/main/paddle.js"></script>
+    <script src="scene/main/ball.js"></script>
+    <script src="scene/main/block.js"></script>
+    <script src="scene/main/scene.js"></script>
+    <script src="scene/end/scene_end.js"></script>
+    <script src="scene/title/scene_title.js"></script>
+    <!--main-->
+    <script src="levels.js"></script>
+    <script src="main.js"></script>
+
+</body>
+</html>
