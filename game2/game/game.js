@@ -73,6 +73,11 @@ class Game {
     replaceScene(scene) {
         this.scene = scene
     }
+    gameOver() {
+        var scene = SceneEnd.new(this)
+        console.log("scene", scene)
+        this.replaceScene(scene)
+    }
     loadImages() {
         var o = this
         var names = Object.keys(o.images)

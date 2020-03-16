@@ -10,7 +10,7 @@
     </style>
 </head>
 <body>
-    <canvas id="id-canvas" width="480" height="800"></canvas>
+    <canvas id="id-canvas" width="480" height="700"></canvas>
     <hr>
     <div>
         <label>
@@ -28,7 +28,7 @@
     </div>
     <div>
         <label>
-            <input data-value="config.bullet_speed" class="auto-slider" type="range" value="">
+            <input data-value="config.player_bullet_speed" class="auto-slider" type="range" value="">
             子弹速度:<span class="ui-label"></span>
         </label>
     </div>
@@ -70,7 +70,7 @@
     <script src="game/config.js"></script>
     <script src="game/utils.js"></script>
     <script src="game/game.js"></script>
-    <script src="game/scene.js"></script>
+    <script src="game/base_scene.js"></script>
     <script src="game/image.js"></script>
     <!--scene-->
     <script src="scene/main/sky.js"></script>
@@ -81,8 +81,11 @@
     <script src="scene/main/ball.js"></script>
     <script src="scene/main/block.js"></script>
     <script src="scene/main/scene.js"></script>
-    <script src="scene/end/scene_end.js"></script>
+    <script src="scene/main/particle.js"></script>
+    <script src="scene/main/particle_system.js"></script>
+    <script src="scene/common/scene_text.js"></script>
     <script src="scene/title/scene_title.js"></script>
+    <script src="scene/end/scene_end.js"></script>
     <!--main-->
     <script src="levels.js"></script>
     <script src="main.js"></script>

@@ -1,12 +1,16 @@
-class SceneTitle extends BaseScene {
+
+class SceneTitle extends SceneText {
     constructor(game) {
-        super(game)
+        super(game, '按 k 开始')
+        this.setup()
+    }
+    setup() {
+        let game = this.game
         game.registerAction('k', function () {
             game.replaceScene(Scene.new(game))
         })
     }
-    draw() {
-        this.game.context.fillStyle = "black"
-        this.game.context.fillText('按 k 游戏开始', 150, 150);
-    }
+    // draw() {
+    //     // super.draw();
+    // }
 }

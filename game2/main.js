@@ -34,11 +34,13 @@ var __main = function () {
         enemy1: baePath + 'enemy1.png',
         enemy2: baePath + 'enemy2.png',
         enemy3: baePath + 'enemy3.png',
-        bullet1: baePath + 'bullet1.png',
+        player_bullet: baePath + 'player_bullet.png',
+        enemy_bullet: baePath + 'enemy_bullet.png',
+        particle: baePath + 'particle.png',
     }
     var gameCallback = function() {
-        // var scene = SceneTitle.new(game)
-        var scene = Scene.new(game)
+        var scene = SceneTitle.new(game)
+        // var scene = Scene.new(game)
         game.replaceScene(scene)
     }
     var game = Game.instance(30, images, gameCallback)

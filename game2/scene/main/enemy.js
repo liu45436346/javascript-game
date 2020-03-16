@@ -2,12 +2,16 @@ class Enemy extends BaseImage {
     constructor(game) {
         var level = random(1, 3)
         super(game, 'enemy' + level)
+        this.level = level
         this.setup()
     }
     setup() {
-        this.speed = random(2, 6)
+        this.status = 'show'
+        this.life = this.level
+        this.speed = random(1, 3)
         this.x = random(0, 350)
         this.y = -random(0, 300)
+        this.cooldown = config.enemy_bullet_cooldown
     }
     move(y) {
         this.y = y
@@ -18,9 +22,34 @@ class Enemy extends BaseImage {
     }
     update() {
         this.y += this.speed
-        this.speed = config.enemy_speed
+        // this.speed = config.enemy_speed
         if(this.y > 700) {
             this.setup()
+        }
+        if (this.cooldown) {
+            this.cooldown--
+            this.fire()
+        }
+    }
+    fire() {
+        if (this.cooldown === 0) {
+            this.cooldown = config.enemy_bullet_cooldown
+            var x = this.x + this.w / 2
+            var y = this.y
+            var bullet = Bullet.new(this.game, 'enemy')
+            bullet.x = x
+            bullet.y = y
+            this.scene.addElement(bullet)
+        }
+    }
+    kill() {
+        this.life--
+        if (this.life === 0) {
+            let x = this.x + this.w /2
+            let y = this.y + this.h /2
+            let particleSys = ParticleSystem.new(this.game, x, y)
+            this.scene.addElement(particleSys)
+            this.status = 'hide'
         }
     }
     // moveDown() {

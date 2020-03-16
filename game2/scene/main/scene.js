@@ -1,6 +1,4 @@
 
-
-
 class Scene extends BaseScene {
     constructor(game) {
         super(game)
@@ -8,7 +6,7 @@ class Scene extends BaseScene {
         this.sky = Sky.new(game)
         this.player = Player.new(game)
         this.enemies = []
-        this.enemyNumber = 10
+        this.enemyNumber = config.enemy_number
         this.setup()
     }
     setup() {
@@ -49,30 +47,6 @@ class Scene extends BaseScene {
             p.fire()
         })
     }
-    loadLevel(n) {
-        var game = this.game
-        n = n - 1
-        var level = levels[n]
-        var blocks = []
-        for (var i = 0; i < level.length; i++) {
-            var arr = level[i];
-            var block = Block.new(arr, game)
-            blocks.push(block)
-        }
-        return blocks
-    }
-    // changeLevel() {
-    //     var game = this.game
-    //     var blocks = this.blocks
-    //     var self = this
-    //     window.addEventListener('keydown', function (event) {
-    //         var key = event.key
-    //         var levels = '123'
-    //         if (levels.includes(key)) {
-    //             self.blocks = self.loadLevel(Number(key), game)
-    //         }
-    //     })
-    // }
     update() {
         super.update()
     }
