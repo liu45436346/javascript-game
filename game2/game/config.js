@@ -4,8 +4,8 @@ var config = {
     enemy_speed: 2,
     enemy_bullet_speed: -5,
     player_bullet_cooldown: 5,
-    enemy_bullet_cooldown: 30,
-    particles_number: 50,
+    enemy_bullet_cooldown: 40,
+    particles_number: 20,
     particles_fps: 10,
-    enemy_number: 20,
+    enemy_number: 5,
 }

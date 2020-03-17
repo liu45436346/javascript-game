@@ -21,21 +21,22 @@ class Enemy extends BaseImage {
 
     }
     update() {
+        let y = this.y
         this.y += this.speed
         // this.speed = config.enemy_speed
-        if(this.y > 700) {
+        let p  = y + this.h
+        if (y > 700) {
             this.setup()
-        }
-        if (this.cooldown) {
-            this.cooldown--
+        } else if (p > 0 && p < 700 && this.life > 0) {
             this.fire()
         }
     }
     fire() {
+        this.cooldown--
         if (this.cooldown === 0) {
             this.cooldown = config.enemy_bullet_cooldown
             var x = this.x + this.w / 2
-            var y = this.y
+            var y = this.y + this.h
             var bullet = Bullet.new(this.game, 'enemy')
             bullet.x = x
             bullet.y = y
