@@ -19,6 +19,7 @@ class SceneTitle extends SceneText {
             animation.moveLeft(keyType)
         })
         game.registerAction('d', function (keyType) {
+            // console.log('keyType', keyType)
             animation.moveRight(keyType)
         })
     }

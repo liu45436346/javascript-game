@@ -5,6 +5,8 @@ class Game {
         var canvas = document.querySelector('#id-canvas')
         var context = canvas.getContext('2d')
         this.canvas = canvas
+        this.canvasWidth = canvas.width
+        this.canvasHight = canvas.height
         this.context = context
         this.actives = {}
         this.keyDown = {}
@@ -29,7 +31,17 @@ class Game {
         return this.i
     }
     drawImage(gameImage) {
-        this.context.drawImage(gameImage.texture, gameImage.x, gameImage.y)
+        let width = this.canvasWidth
+        let status = gameImage.status
+        if (status === 'turn') {
+            this.context.save()
+            this.context.translate(width, 0)
+            this.context.scale(-1, 1)
+            this.context.drawImage(gameImage.texture, width - gameImage.w - gameImage.x, gameImage.y)
+            this.context.restore()
+        } else {
+            this.context.drawImage(gameImage.texture, gameImage.x, gameImage.y)
+        }
     }
     clearRect() {
         var canvas = this.canvas
@@ -52,8 +64,9 @@ class Game {
             let keyType = o.keyDown[key]
             if (keyType === 'keydown') {
                 o.actives[key](keyType)
-            } else {
-                
+            } else if (keyType === 'keyup') {
+                o.actives[key](keyType)
+                o.keyDown[key] = null
             }
         }
         o.clearRect()

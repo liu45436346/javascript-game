@@ -43,6 +43,10 @@ var __main = function () {
         run3: baePath + 'run/player-run-03.png',
         run4: baePath + 'run/player-run-04.png',
         run5: baePath + 'run/player-run-05.png',
+        idle0: baePath + 'idle/player-idle-00.png',
+        idle1: baePath + 'idle/player-idle-01.png',
+        idle2: baePath + 'idle/player-idle-02.png',
+        idle3: baePath + 'idle/player-idle-03.png',
     }
     var gameCallback = function() {
         var scene = SceneTitle.new(game)
