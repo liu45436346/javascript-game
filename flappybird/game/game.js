@@ -6,7 +6,6 @@ class Game {
         var context = canvas.getContext('2d')
         this.canvas = canvas
         this.canvasWidth = canvas.width
-        this.canvasHight = canvas.height
         this.context = context
         this.actives = {}
         this.keyDown = {}
@@ -30,18 +29,9 @@ class Game {
         this.i = this.i || new this(...args)
         return this.i
     }
+
     drawImage(gameImage) {
-        let width = this.canvasWidth
-        let status = gameImage.status
-        if (status === 'turn') {
-            this.context.save()
-            this.context.translate(width, 0)
-            this.context.scale(-1, 1)
-            this.context.drawImage(gameImage.texture, width - gameImage.w - gameImage.x, gameImage.y)
-            this.context.restore()
-        } else {
-            this.context.drawImage(gameImage.texture, gameImage.x, gameImage.y)
-        }
+        this.context.drawImage(gameImage.texture, gameImage.x, gameImage.y)
     }
     clearRect() {
         var canvas = this.canvas

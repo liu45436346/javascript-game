@@ -32,7 +32,7 @@ class BaseScene {
             if (e.status === 'hide') {
                 continue
             }
-            game.drawImage(e)
+            e.draw ? e.draw() : game.drawImage(e)
         }
     }
     addElementByArray(arr) {
