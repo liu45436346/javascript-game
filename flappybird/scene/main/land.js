@@ -19,7 +19,7 @@ class Land {
             let land = new this(game)
             land.x = i * 336
             land.index = i
-            land.y = 750
+            land.y = game.canvas.height - 50
             result.push(land)
         }
         return result

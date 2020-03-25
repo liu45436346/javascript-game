@@ -1,13 +1,13 @@
-var changeBallSpeed = function () {
-    var el = document.querySelector('#id-input-speed')
-    el.addEventListener('input', function (event) {
-        var target = event.target
-        var value = Number(target.value)
-        if (!value) value = 30
-        window.fps = value
-    })
-
-}
+// var changeBallSpeed = function () {
+//     var el = document.querySelector('#id-input-speed')
+//     el.addEventListener('input', function (event) {
+//         var target = event.target
+//         var value = Number(target.value)
+//         if (!value) value = 30
+//         window.fps = value
+//     })
+//
+// }
 
 var enableDebugMode = function(enable) {
     if (!enable) {

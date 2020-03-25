@@ -5,13 +5,18 @@ class Scene extends BaseScene {
         this.setup()
     }
     setup() {
-        this.bird = Bird.new(this.game)
         this.birdBg = BaseImage.new(this.game, 'bg_day')
-        this.landList = Land.new(this.game)
         this.addElement(this.birdBg)
+        this.bird = Bird.new(this.game)
+        this.landList = Land.new(this.game)
+        this.pipeList = Pipe.new(this.game)
         this.addElement(this.landList)
+        this.addElement(this.pipeList)
         this.addElement(this.bird)
         this.registerAction()
+        this.interval = 250
+        this.fps = 3
+        this.counter = 0
     }
     flipDraw(gameImage) {
         let ctx = this.game.context
@@ -38,6 +43,26 @@ class Scene extends BaseScene {
             const e = elements[i];
             this.flipDraw(e)
         }
+    }
+    debug() {
+        this.interval = 100
+    }
+    update() {
+        this.fps--
+        if (this.fps === 0) {
+            this.fps = 3
+            this.x -= 5
+            if (this.x < 0) {
+                this.x = 461 + this.distance
+            }
+        }
+        this.pipeList.forEach((pipe, index) => {
+            if (!pipe.flipY && pipe.x > this.game.canvas.width) {
+                pipe.y = -random(0, 310)
+                this.pipeList[index + 1].y = pipe.h + pipe.y + config.pipe_interval.value
+            }
+        })
+        super.update()
     }
     registerAction() {
         let game = this.game

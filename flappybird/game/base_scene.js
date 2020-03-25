@@ -20,6 +20,9 @@ class BaseScene {
         var elements = this.elements
         for (let i = 0; i < elements.length; i++) {
             const e = elements[i];
+            if (true && e.debug) {
+                e.debug()
+            }
             e.update()
             this.handleStatus(e, i)
         }

@@ -22,7 +22,7 @@ class Bird extends Animation {
             this.gravity += this.gravity* 0.1
             this.y += this.gravity
         }
-        let h = 710
+        let h = 535
         if (this.y > h) {
             this.y = h
         }

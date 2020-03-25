@@ -31,6 +31,7 @@ var __main = function () {
         bird1_1: baePath + 'bird/bird1_1.png',
         bird1_2: baePath + 'bird/bird1_2.png',
         land_0: baePath + 'bird/land_0.png',
+        pipe0_down: baePath + 'bird/pipe0_down.png',
     }
     var gameCallback = function() {
         // var scene = SceneTitle.new(game)
@@ -38,7 +39,7 @@ var __main = function () {
         game.replaceScene(scene)
     }
     var game = Game.instance(30, images, gameCallback)
-    changeBallSpeed()
+    // changeBallSpeed()
     enableDebugMode(true)
 
 }
