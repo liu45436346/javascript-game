@@ -39,7 +39,7 @@ class Pipe {
         if (this.fps === 0) {
             this.fps = 3
             this.x -= 5
-            if (this.x < 0) {
+            if (this.x + this.w < 0) {
                 this.x = 461 + this.distance
             }
         }
